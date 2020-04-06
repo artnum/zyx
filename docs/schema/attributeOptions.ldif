@@ -1,0 +1,58 @@
+# Add attribute option "uprefix" which means "unit prefix"
+# Metric symbol : Y Z E P T G M k h da d c m u n p f a z y
+# [ ... ]
+# uprefix-G   : giga    -> 10 ^ 5
+# uprefix-M   : mega    -> 10 ^ 4
+# uprefix-k   : kilo    -> 10 ^ 3
+# uprefix-h   : hecto   -> 10 ^ 2
+# uprefix-da  : deca    -> 10 ^ 1
+# uprefix-d   : deci    -> 10 ^ -1
+# uprefix-c   : centi   -> 10 ^ -2
+# uprefix-m   : milli   -> 10 ^ -3
+# uprefix-u   : micro   -> 10 ^ -4
+# uprefix-n   : nano    -> 10 ^ -5
+# [ ... ]
+#
+dn: cn=config
+changetype: modify
+add: olcAttributeOptions
+olcAttributeOptions: uprefix-
+
+# Add attribute option "at-" which mean "at X per defined value".
+# Syntax is [m|][0-9]+p[0-9]* :
+#  m : minus
+#  [0-9]+ : value
+#  p : per
+#  [0-9]+ : value
+#
+#  Example : m25p100 -> -25%
+#            25p1000 -> 25‰
+#            90p360 -> 90°
+#
+# To be used when a value, for example, is at a specified load :
+#
+# Example for a power supply 80 Plus Bronze:
+# efficiency: 81
+# efficiency;at-50: 85
+# efficiency:at-20: 81
+#
+dn: cn=config
+changetype: modify
+add: olcAttributeOptions
+olcAttributeOptions: at-
+
+# Add attribute to set min and max value
+dn: cn=config
+changetype: modify
+add: olcAttributeOptions
+olcAttributeOptions: min
+-
+add: olcAttributeOptions
+olcAttributesOptions: max
+
+# Add attribute option "unit"
+# Metric unit : m kg s A K mol cd Hz N Pa J W C V Ohm S F T Wb H DegC rad sr lm lx Bq Gy Sv kat
+dn: cn=config
+changetype: modify
+add: olcAttributeOptions
+olcAttributeOptions: unit-

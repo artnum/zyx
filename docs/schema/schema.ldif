@@ -1,0 +1,92 @@
+# Numeric value use uprefix- as floating point is not possible
+dn: cn=zyx,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: zyx
+olcObjectIdentifier: zyxLDAPRoot 1.3.6.1.4.1.31204.100.11.1
+olcObjectIdentifier: zyxAttr zyxLDAPRoot:1.1
+olcObjectIdentifier: zyxClass zyxLDAPRoot:1.2
+olcAttributeTypes: ( zyxAttr:1  NAME 'zyxReference' DESC 'A string to reference object' SUP name)
+olcAttributeTypes: ( zyxAttr:2  NAME 'zyxUuid' DESC 'Machine uuid' EQUALITY UUIDMatch ORDERING UUIDOrderingMatch SYNTAX 1.3.6.1.1.16.1 SINGLE-VALUE )
+olcAttributeTypes: ( zyxAttr:3  NAME 'zyxType' DESC 'A type of an object' SUP name)
+olcAttributeTypes: ( zyxAttr:4  NAME 'zyxPower' DESC 'True power' EQUALITY integerMatch ORDERING integerOrderingMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+olcAttributeTypes: ( zyxAttr:5  NAME 'zyxApparentPower' DESC 'Apparent power' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:6  NAME 'zyxTorque' DESC 'Torque' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:7  NAME 'zyxWeight' DESC 'Weight' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:8  NAME 'zyxHeight' DESC 'Height' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:9  NAME 'zyxWidth' DESC 'Width' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:10 NAME 'zyxLength' DESC 'Length' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:11 NAME 'zyxCapacity' DESC 'Capacity' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:12 NAME 'zyxPotential' DESC 'Potential' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:13 NAME 'zyxFlowRate' DESC 'Flow Rate' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:14 NAME 'zyxSpeed' DESC 'Speed' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:15 NAME 'zyxRPM' DESC 'RPM' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:16 NAME 'zyxThrust' DESC 'Thrust (for plane) or traction (for car)' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:17 NAME 'zyxLift' DESC 'Lift (for plane) or support (for car)' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:18 NAME 'zyxLoad' DESC 'Load' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:19 NAME 'zyxZAxis' DESC 'Z Axis' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:20 NAME 'zyxYAxis' DESC 'Y Axis' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:21 NAME 'zyxXAxis' DESC 'X Axis' SUP zyxPower )
+olcAttributeTypes: ( zyxAttr:22 NAME 'zyxFile' DESC 'File path associated' SUP name )
+olcAttributeTypes: ( zyxAttr:23 NAME 'zyxFileDigest' DESC 'Digest of a file' SUP name )
+olcAttributeTypes: ( zyxAttr:24 NAME 'zyxFileSignature' DESC 'Signature of file of a file' EQUALITY octetStringMatch ORDERING octetStringOrderingMatch SYNTAX  1.3.6.1.4.1.1466.115.121.1.40 )
+
+# Generic object
+olcObjectClasses: (
+ zyxClass:1 NAME 'zyxObject'
+ DESC 'A zyx object, composite object made of its children'
+ SUP top
+ STRUCTURAL
+ MUST ( zyxUuid )
+ MAY ( cn $ description $ zyxReference $ zyxType )
+ )
+
+# Physical object
+olcObjectClasses: (
+ zyxClass:2
+ SUP zyxObject
+ STRUCTURAL
+ MAY ( zyxHeight $ zyxWidth $ zyxLength $ zyxWeight )
+ )
+
+# Motor 
+olcObjectClasses: (
+ zyxClass:3 NAME 'zyxMotor'
+ DESC 'A datasheet for a part or complete machine'
+ SUP zyxObject
+ STRUCTURAL
+ MAY ( zyxPower $ zyxApparentPower $ zyxTorque $ zyxRPM )
+ )
+
+# Power storage
+olcObjectClasses: (
+ zyxClass:4 NAME 'zyxPowerStorage'
+ SUP zyxObject
+ STRUCTURAL
+ MAY ( zyxCapacity $ zyxFlowRate $ zyxPotential )
+ )
+
+# Propulsion
+olcObjectClasses: (
+  zyxClass:5 NAME 'zyxPropulsion'
+  SUP zyxObject
+  STRUCTURAL
+  MAY ( zyxSpeed $ zyxThrust $ zyxLift )
+  )
+
+# Lift device
+olcObjectClasses: (
+  zyxClass:6 NAME 'zyxLifter'
+  SUP zyxObject
+  DESCRIPTION 'Lifting device might have different load at different point in space'
+  STRUCTURAL
+  MAY ( zyxLoad $ zyxXAxis $ zyxYAxis $ zyxZAxis )
+  )
+
+# 
+olcObjectClasses: (
+  zyxClass:7 NAME 'zyxFile'
+  SUP zyxObject
+  DESCRIPTION 'File path associated with object'
+  STRUCTURAL
+  MAY ( zyxFile $ zyxFileDigest $ zyxFileSignature $ description)
+  )
